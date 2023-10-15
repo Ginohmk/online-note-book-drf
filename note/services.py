@@ -61,10 +61,11 @@ class NoteDataClass:
     due_date: datetime.datetime
     content: str
     priority: int
+    is_email_send: bool
+    is_complete: bool
     id: str = None
     created_at: datetime.datetime = None
     user: user_services.UserDataClass = None
-    is_complete: bool = False
 
     @classmethod
     def from_instance(cls, note: "Note") -> "NoteDataClass":
@@ -76,6 +77,7 @@ class NoteDataClass:
             is_complete=note.is_complete,
             priority=note.priority,
             created_at=note.created_at,
+            is_email_send=note.is_email_send,
             user=note.user,
         )
 
@@ -465,3 +467,32 @@ def send_email(html_template: str, email_data: dict) -> None:
             data={"message": "SMTP Connect error"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
+
+
+def update_note_is_email_send(note_id: str) -> None:
+    """Update note is email send field to True
+
+    Parameter
+    ----------
+    note_id : str
+        contains note id
+
+    Return
+    ------
+     None
+    """
+    note = models.Note.objects.filter(id=note_id).first()
+
+    if not note:
+        raise exceptions.NotFound("Note Does not exist")
+
+    note.title = note.title
+    note.content = note.content
+    note.due_date = note.due_date
+    note.priority = note.priority
+    note.is_complete = note.is_complete
+    note.is_email_send = True
+
+    print("Update In Email Send to true.....")
+
+    note.save()

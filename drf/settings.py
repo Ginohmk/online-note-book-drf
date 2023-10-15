@@ -86,6 +86,13 @@ WSGI_APPLICATION = "drf.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
+# To get domain link
+if os.environ.get("SSH_CLIENT", None) != None:
+    DOMAIN_LINK = "44.241.249.189:8000"
+else:
+    DOMAIN_LINK = "127.0.0.1/8000"
+
+
 if os.environ.get("SSH_CLIENT", None) != None:
     # Production DB
     DATABASES = {
@@ -196,3 +203,13 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get("HOST_EMAIL_USER", "Enter yours")
 EMAIL_HOST_PASSWORD = os.environ.get("HOST_EMAIL_PASSWORD", "Enter yours")
+
+
+# Celery settings
+CELERY_BROKER_URL = "redis://127.0.0.1:6379"
+# broker_connection_retry_on_startup = True
+
+# schedule task
+CELERY_BEAT_SCHEDULE = {
+    "reminder_func": {"task": "note.tasks.due_date_reminder", "schedule": 20}
+}

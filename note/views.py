@@ -12,7 +12,7 @@ from django.http import HttpResponse
 import csv
 
 #  covert html to pdf
-from django.template.loader import get_template, render_to_string
+from django.template.loader import get_template
 from xhtml2pdf import pisa
 from io import BytesIO
 

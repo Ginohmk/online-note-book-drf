@@ -23,6 +23,8 @@ class Note(models.Model):
 
     is_complete = models.BooleanField(default=False, verbose_name="is complete")
 
+    is_email_send = models.BooleanField(default=False, verbose_name="is email send")
+
     priority = models.PositiveIntegerField(
         default=1,
         validators=[MinValueValidator(1), MaxValueValidator(10)],
